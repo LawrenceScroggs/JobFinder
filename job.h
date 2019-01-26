@@ -46,20 +46,19 @@ class list{
 
 
     int buildLocation();
-    int buildJobs();
     int display();
 
     //~list();
   private:
 
+    int displayPrivateJobs(job * head2);
     int displayPrivate(local * head);
     int buildLocationNode();
     int buildPrivate_Location(local * & head);
-    int buildJobNode();
+    int buildJobNode(local * head);
     int buildPrivate_Jobs(job * & head2);
 
     local * head;
-    job * head2;
 
 
 
