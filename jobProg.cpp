@@ -21,7 +21,38 @@ int list::buildPrivate_Jobs(job * & head2)
   cin.get(temp);
   cin.ignore(100,'\n')
   job->compName = new char(strlen(temp) + 1);
-  strcpy(temp,job->compName);
+  strcpy(job->compName,temp);
+  cout << endl << endl;
+
+  cout << "Please enter the job description: ";
+  char * temp2 = new char[100];
+  cin.get(temp2);
+  cin.ignore(100,'\n');
+  job->description = new char(strlen(temp2) + 1);
+  strcpy(job->description,temp2);
+  cout << endl << endl;
+
+  cout << "Please enter qualifications required(e.g. C++, Java): ";
+  cin.get(temp2);
+  cin.ignore(100,'\n');
+  job->qualifications = new char(strlen(temp2) + 1);
+  strcpy(job->qualifications,temp2);
+  cout << endl << endl;
+
+  cout << "Please enter job type(e.g. Internship, Permanent): ";
+  cin.get(temp);
+  cin.ignore(100,'\n');
+  job->jobSpec = new char(strlen(temp) + 1);
+  strcpy(job->jobSpec,temp);
+  cout << endl << endl;
+
+  cout << "Please enter degree required(e.g. Associate, Bachelor): ";
+  cin.get(temp);
+  cin.ignore(100,'\n');
+  job->degree = new char(strlen(temp)+1);
+  strcpy(job->degree,temp);
+  cout << endl << endl;
+
 
 
 }
