@@ -13,6 +13,7 @@ int main()
 {
   list locations;
   bool temp = true;
+  bool YorN = false;
   int displayCatch = 0;
 
 
@@ -23,19 +24,37 @@ int main()
     temp = locations.goAgain();
 
   }while(temp == true);
-  temp = false;
 
   cout << "Would you like to display the Locations? ";
-  temp = locations.yesNo();
+  YorN = locations.yesNo();
   
-  if(temp == true)
+  if(YorN == true)
     locations.display();
 
-  while(displayCatch != 1)
-  {
-    displayCatch = locations.displayLocationJobs();
+  YorN = false;
+ 
+  cout << "Would you like to display Jobs by a Location? ";
+  YorN = locations.yesNo();
 
-  }  
+  if(YorN == true)
+  {
+    while(displayCatch != 1)
+    {
+      displayCatch = locations.displayLocationJobs();
+
+    }  
+  }
+
+  YorN = false;
+
+  cout << "Would you like to edit a job? ";
+  YorN = locations.yesNo();
+
+  if(YorN == true)
+  {
+    locations.editJobs();
+
+  }
 
 
 

@@ -14,9 +14,19 @@ list::list(){
   //head2 = NULL;
 
 }
+int list::editJobs(){
+
+
+}
+int list::findJob(local * head){
+
+}
+int list::editJobs_Private(job * & head2){
+
+}
 // this will search for a certain location that user needs
-int list::displayLocationJobsPriv(local * head)
-{
+int list::displayLocationJobsPriv(local * head){
+
   if(!head) return -1;
 
   job * curr = head->head2; // creates pointer to head2 point for job list
@@ -54,13 +64,13 @@ int list::displayLocationJobsPriv(local * head)
 
 }
 // wrapper function to access certain jobs by location
-int list::displayLocationJobs()
-{
+int list::displayLocationJobs(){
+
   displayLocationJobsPriv(head);
 
 }
-int list::buildPrivate_Jobs(job * & head2)
-{
+int list::buildPrivate_Jobs(job * & head2){
+
   cout << "Please enter the name of the Company: ";
   char * temp = new char[20];
   cin.get(temp,20);
@@ -119,8 +129,8 @@ int list::buildPrivate_Jobs(job * & head2)
 
 }
 // builds the job node 
-int list::buildJobNode(local * headLoc)
-{
+int list::buildJobNode(local * headLoc){
+
   if(!headLoc->head2)// changed head to headLoc was mixing up pointers
   {
     headLoc->head2 = new job;
@@ -145,8 +155,8 @@ int list::buildJobNode(local * headLoc)
 
 }
 // wrapper function to keep data private
-int list::display()
-{
+int list::display(){
+
   displayPrivate(head);
 }
 // runs display
@@ -171,8 +181,7 @@ int list::displayPrivate(local * head){
 
 
 }
-int list::displayPrivateJobs(job * headJob)
-{
+int list::displayPrivateJobs(job * headJob){
   if(!headJob) return -1;
 
   cout << "Company Name: " << endl;
@@ -234,9 +243,6 @@ bool list::goAgain(){
     return true;
 
   else return false;
-
-
-
 
 }
 int list::buildLocation(){
