@@ -13,6 +13,7 @@ int main()
 {
   list locations;
   bool temp = true;
+  int displayCatch = 0;
 
 
   locations.intro();
@@ -30,9 +31,11 @@ int main()
   if(temp == true)
     locations.display();
 
+  while(displayCatch != 1)
+  {
+    displayCatch = locations.displayLocationJobs();
 
-
-  
+  }  
 
 
 

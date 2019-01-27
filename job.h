@@ -28,8 +28,9 @@ struct job{
   char * qualifications;
   char * jobSpec;
   char * degree;
+  char * review;
 
-  int payRate;
+  float payRate;
   int rating;
 
   job * next;
@@ -45,12 +46,15 @@ class list{
     bool yesNo();
 
 
-    int buildLocation();
-    int display();
+    int buildLocation(); //prompts user for location and jobs wrapper function
+    int display(); //displays all jobs
+
+    int displayLocationJobs(); //wrapper, displays jobs at certain location
 
     //~list();
   private:
 
+    int displayLocationJobsPriv(local * head);
     int displayPrivateJobs(job * head2);
     int displayPrivate(local * head);
     int buildLocationNode();
