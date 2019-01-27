@@ -16,12 +16,65 @@ list::list(){
 }
 int list::editJobs(){
 
+  findJob(head);
 
 }
 int list::findJob(local * head){
 
+  if(!head) return -1;
+
+  char * temp = new char[20];
+
+  
+  cout << head->location << endl;
+
+  cout << "Please enter the Job you are looking for: ";
+  cin.get(temp,20);
+  cin.ignore(100,'\n');
+
+
+  while(head->next)
+  {
+    int jobCatch = 0;
+    job * curr = head->head2;
+    cout << "Test";
+    
+    jobCatch = editJobs_Private(curr,temp);
+
+    if(jobCatch == -1)
+    {
+      head = head->next;
+    }
+    else if(jobCatch == 1)
+    {
+      cout << "Edited Sucessfully!!! '\n'";
+
+
+    }
+  }
+
+
 }
-int list::editJobs_Private(job * & head2){
+int list::editJobs_Private(job * & head2, char * temp){
+
+  if(!head2) return 0;
+
+  job * curr = head2;
+
+  cout << curr->compName << endl;
+
+
+  while(curr->next)
+  {
+    if(strcmp(temp,curr->compName) != 0)
+    {
+      curr = curr->next;
+    }
+    else if(strcmp(temp,curr->compName) == 0)
+    {
+      cout << "Found a match of " << temp << " and " << curr->compName << endl;
+    }
+  }
 
 }
 // this will search for a certain location that user needs
@@ -35,6 +88,20 @@ int list::displayLocationJobsPriv(local * head){
   cout << "Please enter the Location you are looking for to display jobs: ";
   cin.get(temp,20);
   cin.ignore(100,'\n');
+  if(strcmp(temp,head->location) == 0)
+  {
+    
+    cout << "Jobs in " << head->location << endl; 
+
+    while(curr)
+    {
+      displayPrivateJobs(curr);
+      curr = curr->next;
+    }
+
+    return 1;
+
+  }
   
   while(head->next)
   {
@@ -50,13 +117,6 @@ int list::displayLocationJobsPriv(local * head){
   {
     cout << "NO MATCHES" << endl;
     return -1;
-  }
-  cout << "Jobs in " << head->location << endl; 
-
-  while(curr)
-  {
-    displayPrivateJobs(curr);
-    curr = curr->next;
   }
 
   return 1;

@@ -56,7 +56,7 @@ class list{
   private:
 
     int findJob(local * head); // Finds job user is trying edit
-    int editJobs_Private(job * & head2); // Edits found job
+    int editJobs_Private(job * & head2, char * head); // Edits found job
     int displayLocationJobsPriv(local * head); // Displays Jobs by Location 
     int displayPrivateJobs(job * head2); // Displays Jobs connected to Location 
     int displayPrivate(local * head); // Displays all jobs 
