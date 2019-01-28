@@ -14,7 +14,7 @@ int main()
   list locations;
   bool temp = true;
   bool YorN = false;
-  int displayCatch = 0;
+  int tempCatch = 0;
 
 
   locations.intro();
@@ -38,25 +38,30 @@ int main()
 
   if(YorN == true)
   {
-    while(displayCatch != 1)
+    while(tempCatch != 1)
     {
-      displayCatch = locations.displayLocationJobs();
+      tempCatch = locations.displayLocationJobs();
 
     }  
   }
 
   YorN = false;
+  tempCatch = 0;
 
-  cout << "Would you like to edit a job? ";
+  cout << "Would you like to edit a review for a job? ";
   YorN = locations.yesNo();
 
   if(YorN == true)
   {
-    locations.editJobs();
+    while(tempCatch != 1)
+    {
+      tempCatch = locations.editJobs();
+
+    }
 
   }
 
-
+  locations.display();
 
 
 

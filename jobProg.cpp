@@ -14,11 +14,13 @@ list::list(){
   //head2 = NULL;
 
 }
+// wrapper function for keeping data private
 int list::editJobs(){
 
   findJob(head);
 
 }
+// this will traverse the location LLL to send information to the review edit
 int list::findJob(local * head){
 
   if(!head) return -1;
@@ -28,53 +30,79 @@ int list::findJob(local * head){
   
   cout << head->location << endl;
 
-  cout << "Please enter the Job you are looking for: ";
+  cout << "Please enter the Job whose review you would like to change: ";
   cin.get(temp,20);
   cin.ignore(100,'\n');
 
 
-  while(head->next)
-  {
     int jobCatch = 0;
-    job * curr = head->head2;
-    cout << "Test";
     
-    jobCatch = editJobs_Private(curr,temp);
+  while(jobCatch != 1)
+  {
 
-    if(jobCatch == -1)
+    jobCatch = editJobs_Private(head,temp);
+    
+    if(jobCatch != 1)
     {
       head = head->next;
     }
     else if(jobCatch == 1)
     {
-      cout << "Edited Sucessfully!!! '\n'";
-
-
+      cout << "Edited Sucessfully!!! \n";
+      return 0;
+    }
+    else if(jobCatch == -1)
+    {
+      cout << "NO MATCHES PLEASE TRY AGAIN" << endl;
+      return -1;
     }
   }
+  return 0;
 
 
 }
-int list::editJobs_Private(job * & head2, char * temp){
+// this will send in location head to search through each job individually
+// if not match returns -1 and goes back to find job if found will change review
+int list::editJobs_Private(local * & head, char * temp){
 
-  if(!head2) return 0;
+  if(!head) return 0;
 
-  job * curr = head2;
+  job * curr = head->head2;
 
   cout << curr->compName << endl;
 
+  if(strcmp(temp,curr->compName) == 0)
+    {
+      cout << "Found a match of " << temp << " and " << curr->compName << endl;
+
+      cout << "Please edit the review: ";
+
+      char * temp = new char[100];
+      cin.get(temp,100);
+      cin.ignore(100,'\n');
+      curr->review = new char[strlen(temp) + 1];
+      strcpy(curr->review,temp);
+      cout << endl;
+
+
+      return 1;
+    }
 
   while(curr->next)
   {
     if(strcmp(temp,curr->compName) != 0)
     {
       curr = curr->next;
-    }
-    else if(strcmp(temp,curr->compName) == 0)
-    {
-      cout << "Found a match of " << temp << " and " << curr->compName << endl;
+      cout << curr->compName << endl;
+     
     }
   }
+  if(strcmp(temp,curr->compName) != 0)
+  {
+    return -1;
+  }
+
+  return 1;
 
 }
 // this will search for a certain location that user needs
@@ -118,6 +146,14 @@ int list::displayLocationJobsPriv(local * head){
     cout << "NO MATCHES" << endl;
     return -1;
   }
+  
+  cout << "Jobs in " << head->location << endl; 
+
+  while(curr)
+    {
+      displayPrivateJobs(curr);
+      curr = curr->next;
+    }
 
   return 1;
 
@@ -139,7 +175,7 @@ int list::buildPrivate_Jobs(job * & head2){
   strcpy(head2->compName,temp);
   cout << endl;
 
- /* cout << "Please enter the job description: ";
+  cout << "Please enter the job description: ";
   char * temp2 = new char[100];
   cin.get(temp2,100);
   cin.ignore(100,'\n');
@@ -183,7 +219,7 @@ int list::buildPrivate_Jobs(job * & head2){
   cin.ignore(100,'\n');
   head2->review = new char[strlen(temp2)+1];
   strcpy(head2->review,temp2);
-  cout << endl; */
+  cout << endl; 
 
   head2->next = NULL;
 
@@ -246,6 +282,21 @@ int list::displayPrivateJobs(job * headJob){
 
   cout << "Company Name: " << endl;
   cout << headJob->compName << endl;
+  cout << "Description: " << endl;
+  cout << headJob->description << endl;
+  cout << "Qualifications: " << endl;
+  cout << headJob->qualifications << endl;
+  cout << "Job Type: " << endl;
+  cout << headJob->jobSpec << endl;
+  cout << "Degree Required: " << endl;
+  cout << headJob->degree << endl;
+  cout << "Monthly Salary: " << endl;
+  cout << "$ " << headJob->payRate << endl;
+  cout << "Company Rating(1-5): " << endl;
+  cout << headJob->rating << endl;
+  cout << "Company Review: " << endl;
+  cout << headJob->review << endl << endl << endl;
+
   return 1;
 
 }
