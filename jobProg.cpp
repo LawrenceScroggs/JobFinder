@@ -25,10 +25,7 @@ int list::findJob(local * head){
 
   if(!head) return -1;
 
-  char * temp = new char[20];
-
-  
-  cout << head->location << endl;
+  char * temp = new char[20];  
 
   cout << "Please enter the Job whose review you would like to change: ";
   cin.get(temp,20);
@@ -41,23 +38,25 @@ int list::findJob(local * head){
   {
 
     jobCatch = editJobs_Private(head,temp);
+    cout << jobCatch << endl;
+
+    if(jobCatch == -1)
+    {
+      cout << "NO MATCHES PLEASE TRY AGAIN" << endl;
+      return -1;
+    }
     
-    if(jobCatch != 1)
+    else if(jobCatch != 1)
     {
       head = head->next;
     }
     else if(jobCatch == 1)
     {
       cout << "Edited Sucessfully!!! \n";
-      return 0;
-    }
-    else if(jobCatch == -1)
-    {
-      cout << "NO MATCHES PLEASE TRY AGAIN" << endl;
-      return -1;
+      return 1;
     }
   }
-  return 0;
+  return 1;
 
 
 }
@@ -68,8 +67,6 @@ int list::editJobs_Private(local * & head, char * temp){
   if(!head) return 0;
 
   job * curr = head->head2;
-
-  cout << curr->compName << endl;
 
   if(strcmp(temp,curr->compName) == 0)
     {
@@ -90,19 +87,12 @@ int list::editJobs_Private(local * & head, char * temp){
 
   while(curr->next)
   {
+
     if(strcmp(temp,curr->compName) != 0)
     {
       curr = curr->next;
-      cout << curr->compName << endl;
-     
     }
   }
-  if(strcmp(temp,curr->compName) != 0)
-  {
-    return -1;
-  }
-
-  return 1;
 
 }
 // this will search for a certain location that user needs
