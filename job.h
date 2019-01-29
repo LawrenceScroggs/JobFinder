@@ -52,7 +52,7 @@ class list{
     int displayLocationJobs(); //wrapper, displays jobs at certain location
     int editJobs();
 
-    //~list();
+    ~list();
   private:
 
     int fileIn(local * head);

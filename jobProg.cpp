@@ -14,6 +14,13 @@ list::list(){
   //head2 = NULL;
 
 }
+// outputs data to file and destructs
+list::~list(){
+
+  fileOut(head);
+
+
+}
 // outputs data to jobList.txt
 
 int list::fileOut(local * head){
@@ -23,19 +30,29 @@ int list::fileOut(local * head){
 
   if(!head) return -1;
 
-  job * curr = head->head2;
 
-  while(head->next)
+  while(head)
+  
   {
-    file_out << head->location << ':';
+    file_out << head->location << ':' << endl;
+
+    job * curr = head->head2;
+
     while(curr)
     {
+      file_out << curr->compName << '&' << curr->qualifications << '&'
+               << curr->qualifications << '&' << curr->jobSpec << '&'
+               << curr->degree << '&' << curr->payRate << '&'
+               << curr->rating << '&' << curr->review << '\n';
 
+      curr = curr->next;
     }
 
+    head = head->next;
+
   }
-
-
+  file_out.clear();
+  file_out.close();
 }
 
 // checks for info in job.txt
@@ -72,7 +89,6 @@ int list::findJob(local * head){
   {
 
     jobCatch = editJobs_Private(head,temp);
-    cout << jobCatch << endl;
 
     if(jobCatch == -1)
     {
@@ -127,7 +143,7 @@ int list::editJobs_Private(local * & head, char * temp){
       curr = curr->next;
     }
 
-    if(!head->next)
+    if(!head->next) // if next node is empty kick back 
       return -1;
   }
 

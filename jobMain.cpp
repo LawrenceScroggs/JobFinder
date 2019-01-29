@@ -61,7 +61,10 @@ int main()
 
   }
 
-  locations.display();
+  locations.displayLocationJobs();
+
+
+  locations.~list();
 
 
 
