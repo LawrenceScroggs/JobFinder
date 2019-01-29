@@ -14,6 +14,40 @@ list::list(){
   //head2 = NULL;
 
 }
+// outputs data to jobList.txt
+
+int list::fileOut(local * head){
+
+  ofstream file_out;
+  file_out.open("jobList.txt");
+
+  if(!head) return -1;
+
+  job * curr = head->head2;
+
+  while(head->next)
+  {
+    file_out << head->location << ':';
+    while(curr)
+    {
+
+    }
+
+  }
+
+
+}
+
+// checks for info in job.txt
+int list::fileIn(local * head){
+  ifstream file_in;
+  file_in.open("jobList.txt");
+
+  if(file_in)
+  {
+
+  }
+}
 // wrapper function for keeping data private
 int list::editJobs(){
 
@@ -68,30 +102,33 @@ int list::editJobs_Private(local * & head, char * temp){
 
   job * curr = head->head2;
 
-  if(strcmp(temp,curr->compName) == 0)
-    {
-      cout << "Found a match of " << temp << " and " << curr->compName << endl;
 
-      cout << "Please edit the review: ";
-
-      char * temp = new char[100];
-      cin.get(temp,100);
-      cin.ignore(100,'\n');
-      curr->review = new char[strlen(temp) + 1];
-      strcpy(curr->review,temp);
-      cout << endl;
-
-
-      return 1;
-    }
-
-  while(curr->next)
+  while(curr)
   {
 
+    if(strcmp(temp,curr->compName) == 0)
+      {
+        cout << "Found a match of " << temp << " and " << curr->compName << endl;
+
+        cout << "Please edit the review: ";
+
+        char * temp = new char[100];
+        cin.get(temp,100);
+        cin.ignore(100,'\n');
+        curr->review = new char[strlen(temp) + 1];
+        strcpy(curr->review,temp);
+        cout << endl;
+
+
+        return 1;
+      }
     if(strcmp(temp,curr->compName) != 0)
     {
       curr = curr->next;
     }
+
+    if(!head->next)
+      return -1;
   }
 
 }
