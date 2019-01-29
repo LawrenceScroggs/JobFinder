@@ -52,10 +52,12 @@ class list{
     int displayLocationJobs(); //wrapper, displays jobs at certain location
     int editJobs();
 
+    int deleteNodes(); // deletes nodes inside destructor
+
     ~list();
   private:
 
-    int fileIn(local * head);
+    int fileIn(local * & head);
     int fileOut(local * head);
     int findJob(local * head); // Finds job user is trying edit
     int editJobs_Private(local * & head, char * temp); // Edits found job

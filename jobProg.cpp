@@ -11,13 +11,42 @@ list::list(){
 
 
   head = NULL;
+//  fileIn(head);
   //head2 = NULL;
 
 }
 // outputs data to file and destructs
 list::~list(){
 
-  fileOut(head);
+  int temp = 0;
+  temp = fileOut(head);
+  if(temp == 1)
+  {
+   // deleteNodes();
+  }
+
+
+}
+int list::deleteNodes(){
+
+  local * current = head;
+
+  while(head)
+  {
+
+    job * curr = head->head2;
+    current = head->next;
+    while(curr)
+    {
+      job * temp = curr;
+      temp = curr->next;
+      delete curr;
+      curr = temp;
+    }
+
+    delete head;
+    head = current;
+  }
 
 
 }
@@ -34,7 +63,7 @@ int list::fileOut(local * head){
   while(head)
   
   {
-    file_out << head->location << ':' << endl;
+    file_out << head->location << ':' << '\n';
 
     job * curr = head->head2;
 
@@ -43,7 +72,7 @@ int list::fileOut(local * head){
       file_out << curr->compName << '&' << curr->qualifications << '&'
                << curr->qualifications << '&' << curr->jobSpec << '&'
                << curr->degree << '&' << curr->payRate << '&'
-               << curr->rating << '&' << curr->review << '\n';
+               << curr->rating << '&' << curr->review << '&' << '\n';
 
       curr = curr->next;
     }
@@ -53,16 +82,46 @@ int list::fileOut(local * head){
   }
   file_out.clear();
   file_out.close();
+  return 1;
 }
 
 // checks for info in job.txt
-int list::fileIn(local * head){
+int list::fileIn(local * & head){
   ifstream file_in;
   file_in.open("jobList.txt");
 
   if(file_in)
   {
 
+    local * head = new local;
+    job * curr = new job;
+    curr = head->head2;
+
+    while(file_in && file_in.eof())
+    {
+
+      file_in.get(head->location,':');
+      file_in.ignore(100,'\n');
+      head->next = new local;
+      head = head->next;
+      file_in.get(curr->compName,'&');
+      file_in.ignore(100,'&');
+      file_in.get(curr->description,'&');
+      file_in.ignore(100,'&');
+      file_in.get(curr->qualifications,'&');
+      file_in.ignore(100,'&');
+      file_in.get(curr->jobSpec,'&');
+      file_in.ignore(100,'&');
+      file_in.get(curr->degree,'&');
+      file_in.ignore(100,'&');
+      file_in >> curr->payRate;
+      file_in.ignore(100,'&');
+      file_in >> curr->rating;
+      file_in.ignore(100,'&');
+      file_in.get(curr->review,'&');
+      file_in.ignore(100,'\n');
+
+   }
   }
 }
 // wrapper function for keeping data private
@@ -92,10 +151,10 @@ int list::findJob(local * head){
 
     if(jobCatch == -1)
     {
-      cout << "NO MATCHES PLEASE TRY AGAIN" << endl;
+      cout << "No matches found please try again. " << endl;
       return -1;
-    }
-    
+
+    } 
     else if(jobCatch != 1)
     {
       head = head->next;
@@ -109,12 +168,13 @@ int list::findJob(local * head){
   return 1;
 
 
+
 }
 // this will send in location head to search through each job individually
 // if not match returns -1 and goes back to find job if found will change review
 int list::editJobs_Private(local * & head, char * temp){
 
-  if(!head) return 0;
+  if(!head) return -1;
 
   job * curr = head->head2;
 
@@ -138,14 +198,12 @@ int list::editJobs_Private(local * & head, char * temp){
 
         return 1;
       }
-    if(strcmp(temp,curr->compName) != 0)
+    else if(strcmp(temp,curr->compName) != 0)
     {
       curr = curr->next;
     }
-
-    if(!head->next) // if next node is empty kick back 
-      return -1;
   }
+  return 0;
 
 }
 // this will search for a certain location that user needs
@@ -197,6 +255,7 @@ int list::displayLocationJobsPriv(local * head){
       displayPrivateJobs(curr);
       curr = curr->next;
     }
+
 
   return 1;
 
@@ -266,6 +325,7 @@ int list::buildPrivate_Jobs(job * & head2){
 
   head2->next = NULL;
 
+
 }
 // builds the job node 
 int list::buildJobNode(local * headLoc){
@@ -296,7 +356,12 @@ int list::buildJobNode(local * headLoc){
 // wrapper function to keep data private
 int list::display(){
 
-  displayPrivate(head);
+  int temp = 0;
+
+  temp = displayPrivate(head);
+  if(temp == -1) return -1;
+
+  return 0;
 }
 // runs display
 int list::displayPrivate(local * head){

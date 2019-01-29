@@ -18,6 +18,17 @@ int main()
 
 
   locations.intro();
+  cout << "Would you like to see info we have on file? ";
+  YorN = locations.yesNo();
+
+  if(YorN == true)
+  {
+    tempCatch = locations.display();
+    if(tempCatch == -1)
+      cout << "No data in file" << endl;
+  }
+  tempCatch = 0;
+  YorN = false;
   do
   {
     locations.buildLocation();
@@ -25,7 +36,7 @@ int main()
 
   }while(temp == true);
 
-  cout << "Would you like to display the Locations? ";
+  cout << "Would you like to display the Locations and Jobs? ";
   YorN = locations.yesNo();
   
   if(YorN == true)
@@ -61,7 +72,6 @@ int main()
 
   }
 
-  locations.displayLocationJobs();
 
 
   locations.~list();
