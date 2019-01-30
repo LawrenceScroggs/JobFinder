@@ -57,6 +57,9 @@ class list{
     ~list();
   private:
 
+    int addLoc(local * head);
+    int addJob(job * head2);
+
     int fileIn(local * & head);
     int fileOut(local * head);
     int findJob(local * head); // Finds job user is trying edit

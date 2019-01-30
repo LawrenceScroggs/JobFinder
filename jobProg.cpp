@@ -11,18 +11,22 @@ list::list(){
 
 
   head = NULL;
-//  fileIn(head);
+  fileIn(head);
   //head2 = NULL;
 
 }
 // outputs data to file and destructs
 list::~list(){
-
+  
   int temp = 0;
+  if(head)
+  {
+    cout << "test";
   temp = fileOut(head);
+  }
   if(temp == 1)
   {
-   // deleteNodes();
+    deleteNodes();
   }
 
 
@@ -63,16 +67,16 @@ int list::fileOut(local * head){
   while(head)
   
   {
-    file_out << head->location << ':' << '\n';
+    file_out << '/' << head->location << ';' << '\n';
 
     job * curr = head->head2;
 
     while(curr)
     {
-      file_out << curr->compName << '&' << curr->qualifications << '&'
+      file_out << '&' << curr->compName << '&' << curr->qualifications << '&'
                << curr->qualifications << '&' << curr->jobSpec << '&'
                << curr->degree << '&' << curr->payRate << '&'
-               << curr->rating << '&' << curr->review << '&' << '\n';
+               << curr->rating << '&' << curr->review << '&' << ':' << '\n';
 
       curr = curr->next;
     }
@@ -84,45 +88,165 @@ int list::fileOut(local * head){
   file_out.close();
   return 1;
 }
+int list::addLoc(local * to_addLoc)
+{
+  if(!to_addLoc) return -1;
+
+  to_addLoc->next = head;
+  head = to_addLoc;
+
+  return 1;
+
+}
+int list::addJob(job * to_addJob)
+{
+  if(!to_addJob) return -1;
+
+  if(!head) return -1;
+  
+  to_addJob->next = head->head2;
+  head->head2 = to_addJob;
+
+
+}
 
 // checks for info in job.txt
 int list::fileIn(local * & head){
   ifstream file_in;
   file_in.open("jobList.txt");
 
+  char buff[1000];
+  char buff2[1000];
+  int count = 1;
   if(file_in)
   {
+    file_in.get(buff,1000,'\n');
+    cout << buff << endl;
+    file_in.ignore(1000,'\n');
+    local * to_addLoc= new local;
+    job * to_addJob = NULL;
+    while(buff[count] != ':')
+    {
+      buff2[count-1] = buff[count];
+      ++count;
+    }
+    buff2[count-1] = '\0';
+    to_addLoc->location = new char[strlen(buff2)+1];
+    strcpy(to_addLoc->location,buff2);
+    //cout << buff2 << endl;
 
-    local * head = new local;
-    job * curr = new job;
-    curr = head->head2;
+    if(addLoc(to_addLoc) < 0) return -1;
+    
 
-    while(file_in && file_in.eof())
+    to_addLoc = NULL;
+
+
+    while(file_in && !file_in.eof())
     {
 
-      file_in.get(head->location,':');
-      file_in.ignore(100,'\n');
-      head->next = new local;
-      head = head->next;
-      file_in.get(curr->compName,'&');
-      file_in.ignore(100,'&');
-      file_in.get(curr->description,'&');
-      file_in.ignore(100,'&');
-      file_in.get(curr->qualifications,'&');
-      file_in.ignore(100,'&');
-      file_in.get(curr->jobSpec,'&');
-      file_in.ignore(100,'&');
-      file_in.get(curr->degree,'&');
-      file_in.ignore(100,'&');
-      file_in >> curr->payRate;
-      file_in.ignore(100,'&');
-      file_in >> curr->rating;
-      file_in.ignore(100,'&');
-      file_in.get(curr->review,'&');
-      file_in.ignore(100,'\n');
+      int section = 0;
+      int count2 = 0;
+      count = 1;
+     
+      file_in.get(buff,1000,'\n');
+      cout << buff << endl;
+      file_in.ignore(1000,'\n');
+      if(buff[0] == '&')
+      {
 
-   }
+        to_addJob = new job;
+
+        while(buff[count] != ':')
+        {
+          //cout << buff[count] << endl;
+          if(buff[count] != '&')
+          {
+            buff2[count2] = buff[count];
+            ++count2;
+ 
+          }
+          else
+          {
+
+        
+            buff2[count2] = '\0';
+           // cout << buff2 << endl;
+            if(section == 0) // adding name for 1st section
+            {
+
+              to_addJob->compName = new char[strlen(buff2)+1];
+              strcpy(to_addJob->compName,buff2);
+            }
+            if(section == 1)
+            {
+
+              to_addJob->description = new char[strlen(buff2)+1];
+              strcpy(to_addJob->description,buff2);
+            }
+            if(section == 2)
+            {
+              to_addJob->qualifications = new char[strlen(buff2)+1];
+              strcpy(to_addJob->qualifications,buff2);
+
+            }
+            if(section == 3)
+            {
+              to_addJob->jobSpec = new char[strlen(buff2)+1];
+              strcpy(to_addJob->jobSpec,buff2);
+
+            }
+            if(section == 4);
+            {
+              to_addJob->degree = new char[strlen(buff2)+1];
+              strcpy(to_addJob->degree,buff2);
+
+            }
+            if(section == 5)
+            {
+             
+              to_addJob->payRate = strtof(buff2,NULL);
+              
+            }
+            if(section == 6)
+            {
+              to_addJob->rating = strtol(buff2,NULL,10);
+
+            }
+            if(section == 7)
+            {
+              to_addJob->review = new char[strlen(buff2)+1];
+              strcpy(to_addJob->review,buff2);
+            }
+            ++section;
+            count2 = 0;
+          }
+          ++count;
+        }
+        if(addJob(to_addJob) == -1) return -1;
+
+      }
+      if(buff[0] == '/')
+      {
+        to_addLoc = new local;
+        while(buff[count] != ':')
+        {
+          buff2[count-1] = buff[count];
+          ++count;
+        }
+        buff2[count-1] = '\0';
+        to_addLoc->location = new char[strlen(buff2)+1];
+        strcpy(to_addLoc->location,buff2);
+        //cout << buff2 << endl;
+
+        if(addLoc(to_addLoc) < 0) return -1;
+    
+        to_addLoc = NULL;
+      }
+
+
+    }
   }
+  file_in.close();
 }
 // wrapper function for keeping data private
 int list::editJobs(){
@@ -165,6 +289,7 @@ int list::findJob(local * head){
       return 1;
     }
   }
+  delete [] temp;
   return 1;
 
 
@@ -325,7 +450,8 @@ int list::buildPrivate_Jobs(job * & head2){
 
   head2->next = NULL;
 
-
+  delete [] temp;
+  delete [] temp2;
 }
 // builds the job node 
 int list::buildJobNode(local * headLoc){
@@ -447,6 +573,9 @@ int list::buildPrivate_Location(local * & headLoc){
     reply = toupper(reply);
     cout << endl;
   }
+
+  delete [] temp;
+  return 1;
 
 }
 //go again function for location add

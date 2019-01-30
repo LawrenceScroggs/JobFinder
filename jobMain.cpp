@@ -73,11 +73,6 @@ int main()
   }
 
 
-
-  locations.~list();
-
-
-
   return 0;
 }
 
