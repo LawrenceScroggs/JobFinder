@@ -5,13 +5,12 @@
 
 #include "job.h" // brings in .h file
 
-
 // initiates list build and sets location and job heads to NULL
 list::list(){
 
 
   head = NULL;
-  fileIn(head);
+//  fileIn(head); cannot get file to write in correctly
   //head2 = NULL;
 
 }
@@ -21,7 +20,7 @@ list::~list(){
   int temp = 0;
   if(head)
   {
-    cout << "test";
+//    cout << "test";
   temp = fileOut(head);
   }
   if(temp == 1)
@@ -107,6 +106,8 @@ int list::addJob(job * to_addJob)
   to_addJob->next = head->head2;
   head->head2 = to_addJob;
 
+  return 1;
+
 
 }
 
@@ -121,11 +122,10 @@ int list::fileIn(local * & head){
   if(file_in)
   {
     file_in.get(buff,1000,'\n');
-    cout << buff << endl;
     file_in.ignore(1000,'\n');
     local * to_addLoc= new local;
     job * to_addJob = NULL;
-    while(buff[count] != ':')
+    while(buff[count] != ':') // copies line up to delimiter
     {
       buff2[count-1] = buff[count];
       ++count;
@@ -133,7 +133,6 @@ int list::fileIn(local * & head){
     buff2[count-1] = '\0';
     to_addLoc->location = new char[strlen(buff2)+1];
     strcpy(to_addLoc->location,buff2);
-    //cout << buff2 << endl;
 
     if(addLoc(to_addLoc) < 0) return -1;
     
@@ -149,19 +148,17 @@ int list::fileIn(local * & head){
       count = 1;
      
       file_in.get(buff,1000,'\n');
-      cout << buff << endl;
       file_in.ignore(1000,'\n');
-      if(buff[0] == '&')
+      if(buff[0] == '&') // catches jobs
       {
 
         to_addJob = new job;
 
-        while(buff[count] != ':')
+        while(buff[count] != ':') // catches line
         {
-          //cout << buff[count] << endl;
-          if(buff[count] != '&')
+          if(buff[count] != '&') // catches first job section
           {
-            buff2[count2] = buff[count];
+            buff2[count2] = buff[count]; // copies line up to delimiter
             ++count2;
  
           }
@@ -169,8 +166,7 @@ int list::fileIn(local * & head){
           {
 
         
-            buff2[count2] = '\0';
-           // cout << buff2 << endl;
+            buff2[count2] = '\0';// adds null to end of string
             if(section == 0) // adding name for 1st section
             {
 
@@ -225,7 +221,7 @@ int list::fileIn(local * & head){
         if(addJob(to_addJob) == -1) return -1;
 
       }
-      if(buff[0] == '/')
+      if(buff[0] == '/') // catches locations
       {
         to_addLoc = new local;
         while(buff[count] != ':')
@@ -233,10 +229,9 @@ int list::fileIn(local * & head){
           buff2[count-1] = buff[count];
           ++count;
         }
-        buff2[count-1] = '\0';
+        buff2[count-1] = '\0'; // adds null to end of char array
         to_addLoc->location = new char[strlen(buff2)+1];
         strcpy(to_addLoc->location,buff2);
-        //cout << buff2 << endl;
 
         if(addLoc(to_addLoc) < 0) return -1;
     
@@ -245,8 +240,10 @@ int list::fileIn(local * & head){
 
 
     }
+    file_in.clear();
+    file_in.close();
   }
-  file_in.close();
+  
 }
 // wrapper function for keeping data private
 int list::editJobs(){
@@ -550,6 +547,8 @@ bool list::yesNo(){
 // Builds the location node privately
 int list::buildPrivate_Location(local * & headLoc){
 
+
+  local * curr = headLoc;
   char reply = 'Y';
 
     cout << "Please enter the name of the Location: ";

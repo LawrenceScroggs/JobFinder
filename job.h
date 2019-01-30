@@ -22,7 +22,7 @@ struct local{
 
 struct job{
 
-  
+
   char * compName;
   char * description;
   char * qualifications;

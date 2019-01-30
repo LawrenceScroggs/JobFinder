@@ -1,5 +1,0 @@
-/portland:
-&aaa&aaa&aaa&aaa&aaa&123&4&good&:
-&bbb&bbb&bbb&bbb&bbb&456&5&bad&:
-/medford:
-&ccc&ccc&ccc&ccc&ccc&789&3&fun&:
