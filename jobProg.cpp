@@ -10,7 +10,7 @@ list::list(){
 
 
   head = NULL;
-//  fileIn(head); cannot get file to write in correctly
+//  fileIn(head);// cannot get file to write in correctly
   //head2 = NULL;
 
 }
@@ -58,7 +58,7 @@ int list::deleteNodes(){
 int list::fileOut(local * head){
 
   ofstream file_out;
-  file_out.open("jobList.txt");
+  file_out.open("jobList.txt",ios::app);
 
   if(!head) return -1;
 
@@ -66,7 +66,7 @@ int list::fileOut(local * head){
   while(head)
   
   {
-    file_out << '/' << head->location << ';' << '\n';
+    file_out << '/' << head->location << ':' << '\n';
 
     job * curr = head->head2;
 
@@ -87,7 +87,7 @@ int list::fileOut(local * head){
   file_out.close();
   return 1;
 }
-int list::addLoc(local * to_addLoc)
+/*int list::addLoc(local * to_addLoc)
 {
   if(!to_addLoc) return -1;
 
@@ -109,35 +109,43 @@ int list::addJob(job * to_addJob)
   return 1;
 
 
-}
+}*/
 
 // checks for info in job.txt
 int list::fileIn(local * & head){
   ifstream file_in;
   file_in.open("jobList.txt");
 
+//  local * curr = head;
+
   char buff[1000];
   char buff2[1000];
   int count = 1;
+  int count2 = 0;
   if(file_in)
   {
+    if(file_in.peek() != '/') return -1;
+
     file_in.get(buff,1000,'\n');
     file_in.ignore(1000,'\n');
-    local * to_addLoc= new local;
-    job * to_addJob = NULL;
+    local * currLocation = new local;
+    job * currJob = NULL;
+    head = currLocation;;
+    
     while(buff[count] != ':') // copies line up to delimiter
     {
-      buff2[count-1] = buff[count];
+      buff2[count2] = buff[count];
       ++count;
+      ++count2;
     }
-    buff2[count-1] = '\0';
-    to_addLoc->location = new char[strlen(buff2)+1];
-    strcpy(to_addLoc->location,buff2);
+    buff2[count2] = '\0';
+    currLocation->location = new char[strlen(buff2)+1];
+    strcpy(currLocation->location,buff2);
 
-    if(addLoc(to_addLoc) < 0) return -1;
+
     
 
-    to_addLoc = NULL;
+    currLocation->next = NULL;
 
 
     while(file_in && !file_in.eof())
@@ -146,15 +154,16 @@ int list::fileIn(local * & head){
       int section = 0;
       int count2 = 0;
       count = 1;
-     
+      
       file_in.get(buff,1000,'\n');
       file_in.ignore(1000,'\n');
       if(buff[0] == '&') // catches jobs
       {
 
-        to_addJob = new job;
+        currJob = new job;
+        head->head2 = currJob;
 
-        while(buff[count] != ':') // catches line
+
         {
           if(buff[count] != '&') // catches first job section
           {
@@ -170,72 +179,74 @@ int list::fileIn(local * & head){
             if(section == 0) // adding name for 1st section
             {
 
-              to_addJob->compName = new char[strlen(buff2)+1];
-              strcpy(to_addJob->compName,buff2);
+              currJob->compName = new char[strlen(buff2)+1];
+              strcpy(currJob->compName,buff2);
             }
             if(section == 1)
             {
 
-              to_addJob->description = new char[strlen(buff2)+1];
-              strcpy(to_addJob->description,buff2);
+              currJob->description = new char[strlen(buff2)+1];
+              strcpy(currJob->description,buff2);
             }
             if(section == 2)
             {
-              to_addJob->qualifications = new char[strlen(buff2)+1];
-              strcpy(to_addJob->qualifications,buff2);
+              currJob->qualifications = new char[strlen(buff2)+1];
+              strcpy(currJob->qualifications,buff2);
 
             }
             if(section == 3)
             {
-              to_addJob->jobSpec = new char[strlen(buff2)+1];
-              strcpy(to_addJob->jobSpec,buff2);
+              currJob->jobSpec = new char[strlen(buff2)+1];
+              strcpy(currJob->jobSpec,buff2);
 
             }
             if(section == 4);
             {
-              to_addJob->degree = new char[strlen(buff2)+1];
-              strcpy(to_addJob->degree,buff2);
+              currJob->degree = new char[strlen(buff2)+1];
+              strcpy(currJob->degree,buff2);
 
             }
             if(section == 5)
             {
              
-              to_addJob->payRate = strtof(buff2,NULL);
+              currJob->payRate = strtof(buff2,NULL);
               
             }
             if(section == 6)
             {
-              to_addJob->rating = strtol(buff2,NULL,10);
+              currJob->rating = strtol(buff2,NULL,10);
 
             }
             if(section == 7)
             {
-              to_addJob->review = new char[strlen(buff2)+1];
-              strcpy(to_addJob->review,buff2);
+              currJob->review = new char[strlen(buff2)+1];
+              strcpy(currJob->review,buff2);
             }
             ++section;
             count2 = 0;
           }
           ++count;
         }
-        if(addJob(to_addJob) == -1) return -1;
-
       }
       if(buff[0] == '/') // catches locations
       {
-        to_addLoc = new local;
+        count = 1;
+        count2 = 0;
+
+        currLocation->next = new local;
+        currLocation = currLocation->next;
         while(buff[count] != ':')
         {
-          buff2[count-1] = buff[count];
+          buff2[count2] = buff[count];
           ++count;
+          ++count2;
         }
         buff2[count-1] = '\0'; // adds null to end of char array
-        to_addLoc->location = new char[strlen(buff2)+1];
-        strcpy(to_addLoc->location,buff2);
+        currLocation->location = new char[strlen(buff2)+1];
+        strcpy(currLocation->location,buff2);
 
-        if(addLoc(to_addLoc) < 0) return -1;
-    
-        to_addLoc = NULL;
+        currLocation->next = NULL;
+
       }
 
 
